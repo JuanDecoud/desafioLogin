@@ -2,6 +2,7 @@ import { Router } from 'express'
 import ProductManager from "../entities/ProductManager.js"
 import productdb from '../dao/models/product.model.js'
 import cartModel from '../dao/models/cart.model.js'
+import session from 'express-session'
 
 
 
@@ -27,7 +28,7 @@ viewRouter.get('/products/details' ,async(req,res)=>{
 
 
 viewRouter.get ('/products' ,async (req,res)=>{
-    let user = req.session.user || null
+    let user = req.session.user 
     console.log(user)
         try{
             let page = req.query.page || 1

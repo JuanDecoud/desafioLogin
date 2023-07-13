@@ -1,5 +1,7 @@
 <nav class="navbar navbar-danger bg-danger justify-content-between h-25 ">
-    <a></a>
+  <form class="form-inline" action="/views/products" method="get">
+    <button class=" border border-1 border-white btn btn-m btn-danger-success mx-2 my-2 my-sm-0" type="submit">Home</button>
+  </form>
 {{#if user}}
   <form class="form-inline" action="/user/logout" method="get">
     <button class=" border border-1 border-white btn btn-m btn-danger-success mx-2 my-2 my-sm-0" type="submit">Logout</button>

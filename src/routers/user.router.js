@@ -7,7 +7,7 @@ const user = Router ()
 
 
 user.post ('/login',validateUser,(req,res)=>{
-    if(req.session.user)res.redirect('/views/products')
+    if(req.session.user!=null)res.redirect('/views/products')
     else res.send('ocurrio un problema')
    
 })
