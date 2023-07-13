@@ -27,9 +27,8 @@ viewRouter.get('/products/details' ,async(req,res)=>{
 
 
 viewRouter.get ('/products' ,async (req,res)=>{
-    
-    if (req.session.user){
-        let user = req.session.user
+    let user = req.session.user || null
+    console.log(user)
         try{
             let page = req.query.page || 1
             let cartId = req.query.cartId || null
@@ -46,13 +45,7 @@ viewRouter.get ('/products' ,async (req,res)=>{
         }catch (err){
             res.json ({status : "error" , message : err.message })
         }
-    }
-    else {
-        res.redirect('/views/login')
-    }
-
  
-
 })
 
 
