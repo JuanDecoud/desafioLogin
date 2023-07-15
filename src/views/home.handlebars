@@ -3,12 +3,7 @@
     <h1>Lista De Productos</h1>
 </div>
 <div id="listaProductos" class = "container pt-4">
-    <div class ="container my-4 border border-1 border-black">
-        {{#if user}}
-            <h4>Benvenido </h5>
-            <h5>{{user.name}} {{user.lastName}}</h5>
-        {{/if}}
-    </div>
+
     <div class = "d-flex flex-wrap">
         {{#each products.docs}}
             {{#if this.cartId}}
@@ -42,7 +37,7 @@
                 </div>
             {{else}}
                 <div class="card mx-2 my-2" >
-                    <form action="/carts"  method="post"></form>
+                    <form action="/carts"  method="post">
                         <img class="card-img-top" src={{this.linkThubnail}} alt="Card image cap" style="object-fit: cover;">
                         <ul  class="list-group list-group-flush">
                             <h5 class="card-title">{{this.name}}</h5>
@@ -54,7 +49,6 @@
                                     <div class ="d-inline-flex col-6">
                                         <p class ="mx-2">Quantity:</p>
                                         <input type="hidden" name="productId" value={{this._id}}>
-                                        <input type="hidden" name="productId" value={{this.cartId}}>
                                         <input type="number" name="quantity" class="form-control col-10" placeholder="" aria-label="" aria-describedby="basic-addon1">
                                     </div>
                                 </div>
