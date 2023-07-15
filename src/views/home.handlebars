@@ -3,7 +3,12 @@
     <h1>Lista De Productos</h1>
 </div>
 <div id="listaProductos" class = "container pt-4">
-
+    <div class ="container my-4 border border-1 border-black">
+        {{#if user}}
+            <h4>Benvenido </h5>
+            <h5>{{user.name}} {{user.lastName}}</h5>
+        {{/if}}
+    </div>
     <div class = "d-flex flex-wrap">
         {{#each products.docs}}
             {{#if this.cartId}}
