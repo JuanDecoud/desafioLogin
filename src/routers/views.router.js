@@ -3,6 +3,8 @@ import ProductManager from "../entities/ProductManager.js"
 import productdb from '../dao/models/product.model.js'
 import cartModel from '../dao/models/cart.model.js'
 import session from 'express-session'
+import passport from 'passport'
+import userModel from '../dao/models/user.model.js'
 
 
 
@@ -28,8 +30,11 @@ viewRouter.get('/products/details' ,async(req,res)=>{
 
 
 viewRouter.get ('/products' ,async (req,res)=>{
-    let user = req.session.user 
+    let user = null
+    if(req.session.passport===undefined) user = {name:'Invitado'}
+    else user = await userModel.findById(req.session.passport.user).lean()
     console.log(user)
+
         try{
             let page = req.query.page || 1
             let cartId = req.query.cartId || null
@@ -69,6 +74,15 @@ viewRouter.get('/carts/:cid' ,async(req,res)=>{
 viewRouter.get ('/login' , (req,res)=>{
     res.render ('login')
 })
+
+viewRouter.get ('/register' , (req,res)=>{
+    res.render ('register')
+})
+
+viewRouter.get ('/loginError', (req,res)=>{
+    res.render ('errors/loginError')
+})
+
 
 
 

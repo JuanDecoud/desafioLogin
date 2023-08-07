@@ -2,31 +2,31 @@ import {Router} from 'express'
 import {validateUser} from '../middlewares/user.middleware.js'
 import userDb from '../dao/models/user.model.js'
 import session from 'express-session'
+import passport from 'passport'
 
 const user = Router ()
 
 
-user.post ('/login',validateUser,(req,res)=>{
-    if(req.session.user!=null)res.redirect('/views/products')
-    else res.send('ocurrio un problema')
-   
+user.post('/login', passport.authenticate('login', { failureRedirect: '/views/loginError'}), async (req, res) => {
+    
+    res.redirect('/views/products')
 })
 
-user.post ('/register', (req,res)=>{
-    userDb.create({
-        name : "Juan Jose" ,
-        lastName : "Decoud",
-        contry : "Argentina",
-        city : "Mar Del Plata",
-        adress : "505 934",
-        userName : "juanjo.decoud@gmail.com" ,
-        password: "1456" ,
-        category : "admin",
-
-    })
-    res.send("ok")
+user.post ('/register', passport.authenticate('register' ,
+{failureRedirect :'/views/registerError'}),async (req,res)=> {
+    res.redirect('/views/login')
 })
 
+user.get ('/registerGit', passport.authenticate('rGitHub' ,
+{scope :'user:email'}),async (req,res)=> {
+})
+
+
+user.get ('/gitcallBack',passport.authenticate('rGitHub', { failureRedirect: '/views/loginError'}), async (req, res) => {
+    console.log(req.user)
+    req.session.user=req.user
+    res.redirect('/views/products')
+})
 
 user.get('/logout', (req, res) => {
     req.session.destroy(err => {

@@ -5,16 +5,19 @@ let userCollection = "Users"
 const userSchema = new mongoose.Schema({
     name : String ,
     lastName : String,
-    contry : String,
+    country : String,
     city : String,
-    adress : String,
+    address : String,
     userName : String ,
     password: String ,
-    category : String,
+    category : {
+        type:String,
+        default : "user"
+    },
     status : {
         type:Boolean,
         default : true
-    }
+    },
 
 })
 

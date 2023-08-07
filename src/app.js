@@ -11,6 +11,8 @@ import messengerModel from './dao/models/messenger.model.js'
 import methodOverride from 'method-override'
 import MongoStore from 'connect-mongo'
 import session from 'express-session'
+import passport from "passport";
+import initializePassport from "./config/passport.config.js";
 
 ///-------------------------------------------------------
 const app = express ();
@@ -41,6 +43,10 @@ app.use('/user', userRouter)
 app.engine('handlebars' , handlebars.engine())
 app.set('views','./src/views')
 app.set('view engine' ,'handlebars')
+//// passport 
+initializePassport()
+app.use(passport.initialize())
+app.use(passport.session())
 //runDev----------------------------------------------------
 try{
     await mongoose.connect(`mongodb+srv://juanjodecoud:JJjuanjitus22@cluster0.bpez36c.mongodb.net/SegundaPreEntrega`)
