@@ -10,6 +10,10 @@ const userSchema = new mongoose.Schema({
     address : String,
     userName : String ,
     password: String ,
+    cartId : {
+        type :String ,
+        default: null
+    },
     category : {
         type:String,
         default : "user"
