@@ -3,6 +3,7 @@ import { Router } from 'express';
 import ProductManager from '../dao/modelsFs/ProductManager.js'
 import uploader from '../utils/multer.product.js'
 import productModel from '../dao/models/product.model.js'
+import addProductController from '../controllers/products.controllers.js';
 
 
 const productRouter = Router();
@@ -35,10 +36,12 @@ productRouter.get ('/' ,async (req , res)=>{
 
 })
 
+productRouter.post(`/`,uploader.single('file') ,await addProductController(req,res))
+
+/*
 productRouter.post (`/`,uploader.single('file') , async (req,res)=>{
     if (!req.file)res.status (400).json ({message : 'Please, upload product image'})
     const {name,description ,brand ,container,price,code,stock , category , liters} = req.body
-    console.log(req.body)
     if (!name || !description ||!container ||!brand || !price || !code || !stock || !category || !liters)res.status(400).send ("All fields are required")
     else {
         try {
@@ -60,7 +63,7 @@ productRouter.post (`/`,uploader.single('file') , async (req,res)=>{
         }   
     }
 })
-
+*/
 productRouter.put(`/:pid` , async (req,res)=>{
     let id = req.params.pid
     let update = req.body
