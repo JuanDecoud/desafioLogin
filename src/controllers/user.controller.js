@@ -1,4 +1,6 @@
 import services from "../services/index.js"
+import UserDTO from "../dto/user.dto.js"
+
 
 export default class UserController {
     getCurrentUser = async (req,res)=>{
@@ -6,10 +8,11 @@ export default class UserController {
             let user = req.session.passport
             if (user){
                 let result = await services.userService.getById(req.session.passport.user)
+                let userDto = new UserDTO(result)
                 if(result){
                     res.status(200).json ({
                         CurrentUser : {
-                            result
+                            userDto
                         }
                     })
                 }
