@@ -35,14 +35,14 @@ viewRouter.get ('/products' ,async (req,res)=>{
     else user = await userModel.findById(req.session.passport.user).lean()
         try{
             let page = req.query.page || 1
-         ///   let cartId = req.query.cartId || null
+            let cartId = user.cartId|| null
             let filterOptions= {limit : 3 , page : page  , lean :true}
             let products = await productdb.paginate({}, filterOptions)
            /// esto lo hago para agregar el valor del carrito y poder mandarlo por post para conservarlo y poder seguir 
            /// agregando productos
-          /*  products.docs.forEach(element => {
+           products.docs.forEach(element => {
                 element.cartId= cartId
-            });*/
+            });
             products.nextLink = products.hasNextPage?`/views/products?page=${products.nextPage}` : " "
             products.prevLink = products.hasPrevPage? `/views/products?page=${products.prevPage}` : " "
             res.render ('home' , {products ,user} )

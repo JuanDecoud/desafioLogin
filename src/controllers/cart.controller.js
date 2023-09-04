@@ -1,4 +1,5 @@
 import Services  from '../services/index.js'
+import { comprobateMongoId } from '../utils/utils.js'
 
 
 export default class CartController {
@@ -6,7 +7,7 @@ export default class CartController {
   createCart = async(req,res)=>{
       let productId = req.body.productId
       let quantity = req.body.quantity
-  
+      let user = Services.userService.getById(req.session.passport.user)
       try {
         let result = await Services.cartService.create(
           {
@@ -18,15 +19,7 @@ export default class CartController {
               ]
           }
         )
-          await Services.userService.update(req.session.passport.user,{cartId:result._id})
-        
-      /*  let objet = {
-          pathname:'/views/products',
-          query :{
-              cartId :cartid
-          } 
-        }
-        res.status(200).redirect(url.format(objet))*/
+        if(!user.cartId)await Services.userService.update(req.session.passport.user,{cartId:result._id})
         res.status(200).redirect('/views/products')
       }catch (err){
           res.json ({status : "error" , message : err.message })
