@@ -7,7 +7,7 @@ import GitHubStrategy from 'passport-github2'
 const LocalStrategy = local.Strategy
 
 const initializePassport = () => {
-
+    
     passport.use ('rGitHub' , new GitHubStrategy({
         clientID:'Iv1.61a5a8c640773e8d' ,
         clientSecret :'e5d53a4686cda97203b0f6f89fb70f2c74991053',

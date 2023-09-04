@@ -26,7 +26,7 @@ app.use(session({
         }
     }),
     secret: 'juanSecret',
-    resave: true,
+    resave: false,
     saveUninitialized: true
 }))
 app.use(express.json())

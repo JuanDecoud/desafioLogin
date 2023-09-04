@@ -17,8 +17,7 @@ cartsRouter.post ('/:cid/products/:pid' , async(req,res)=>{
     const productId = req.params.pid
     const cartId = req.params.cid
     let quantity = req.body.quantity || 1
-    console.log("desde aca")
-
+ 
     if (productId!=undefined && cartId != undefined){
         let validateId = comprobateMongoId(productId)
         if (validateId=== true){
@@ -76,10 +75,10 @@ cartsRouter.delete('/:cid/product/:pid', async(req,res)=>{
 })
 
 cartsRouter.put('/:cid' , async(req,res)=>{
+
     const cartId = req.params.cid
     let arrayProducts = req.body 
     let result = comprobateMongoId(cartId)
-    console.log(req.body)
     if (result === true){
         try{
             let cart = await cartModel.findById(cartId)
@@ -102,6 +101,7 @@ cartsRouter.put('/:cid/product/:pid' , async(req,res)=>{
     const productId = req.params.pid
     const cartId = req.params.cid
     const productQuantity = req.body.quantity
+   
    
  
     if (productId!=undefined && cartId != undefined){
@@ -129,36 +129,7 @@ cartsRouter.put('/:cid/product/:pid' , async(req,res)=>{
 
 })
 
-cartsRouter.post ('/', async(req,res)=>{
-    let productId = req.body.productId
-    let quantity = req.body.quantity
-
-    try {
-      let result = await cartModel.create(
-        {
-            products : [
-                {
-                    product : productId,
-                    quantity:quantity
-                }
-            ]
-        }
-      )
-      let cartid = result._id.toString()
-      console.log(cartid)
-
-      let objet = {
-        pathname:'/views/products',
-        query :{
-            cartId :cartid
-        } 
-      }
-
-      res.status(200).redirect(url.format(objet))
-    }catch (err){
-        res.json ({status : "error" , message : err.message })
-    }
-})
+cartsRouter.post ('/', )
 
 cartsRouter.get('/:cid',async (req,res)=>{
     try{
