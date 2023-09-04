@@ -1,3 +1,4 @@
+import services from '../services/index.js'
 import Services  from '../services/index.js'
 import { comprobateMongoId } from '../utils/utils.js'
 
@@ -121,5 +122,17 @@ export default class CartController {
     else  res.status(400).json({status: "Error" , message : "Invalidad Id"}) 
   
 }
+
+ finishPurchase = async (req,res)=>{
+    const cartId = req.params.cid
+    let cart = await services.cartService.getById(cartId)
+    if(cart){
+        let products = cart.products
+        
+
+    }else {
+
+    }
+ }
 
 }
