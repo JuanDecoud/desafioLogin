@@ -9,12 +9,12 @@ const productSchema = new mongoose.Schema({
     description : String,
     brand : String,
     price: Number ,
-    liters: String,
+    liters: Number,
     code: {
         type : String ,
         index : true
     },
-    stock: String ,
+    stock: Number ,
     status: Boolean,
     category: String,
     linkThubnail : String,

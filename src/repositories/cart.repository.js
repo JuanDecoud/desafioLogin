@@ -1,6 +1,4 @@
-import productDao from "../dao/product.mongo.dao.js"
-
-export default class ProductRepository {
+export default class CartRepository {
     constructor (dao){
         this.dao = dao
     }
@@ -13,5 +11,3 @@ export default class ProductRepository {
     paginate = async (filter , filterOptions)=>await this.dao.paginate(filter ,filterOptions)
 
 }
-
-

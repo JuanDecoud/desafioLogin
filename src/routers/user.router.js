@@ -24,8 +24,7 @@ user.get ('/registerGit', passport.authenticate('rGitHub' ,
 
 
 user.get ('/gitcallBack',passport.authenticate('rGitHub', { failureRedirect: '/views/loginError'}), async (req, res) => {
-    console.log(req.user)
-    req.session.user=req.user
+    
     res.redirect('/views/products')
 })
 

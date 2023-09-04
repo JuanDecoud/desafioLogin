@@ -11,7 +11,7 @@
     </div>
     <div class = "d-flex flex-wrap">
         {{#each products.docs}}
-            {{#if this.cartId}}
+            {{#if user.cartId}}
                 <form action="/carts/{{this.cartId}}/products/{{this._id}}"  method="post">
                     <div class="card mx-2 my-2" >
                         <img class="card-img-top" src={{this.linkThubnail}} alt="Card image cap" style="object-fit: cover;">
@@ -25,7 +25,7 @@
                                     <div class ="d-inline-flex col-6">
                                         <p class ="mx-2">Quantity:</p>
                                         <input type="hidden" name="productId" value={{this._id}}>
-                                        <input type="hidden" name="cartId" value={{this.cartId}}>
+                                        <input type="hidden" name="cartId" value={{user.cartId}}>
                                         <input type="number" name="quantity" class="form-control col-10" placeholder="" aria-label="" aria-describedby="basic-addon1">
                                     </div>
                                 </div>
@@ -36,7 +36,7 @@
                     </form>
                     <form action="/views/products/details" type ="get">
                         <input type="hidden" name="productId" value={{this._id}}>
-                        <input type="hidden" name="cartId" value={{this.cartId}}>
+                        <input type="hidden" name="cartId" value={{user.cartId}}>
                         <button id="btnCart" type="submit" class ="btn btn-sm btn-danger my-2">Details</button>
                     </form>
                 </div>
