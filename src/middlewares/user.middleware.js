@@ -12,4 +12,9 @@ const validateUser = async(req,res,next)=>{
     else res.status(402).json({Status : 'Error' , message : "User or Password incorrects"})
 }
 
+
+const userPermission = async (req,res,next)=> {
+    
+}
+
 export {validateUser}
