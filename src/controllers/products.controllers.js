@@ -98,7 +98,6 @@ export default class productControllers {
     showHomeProducts = async (req,res)=> {
         let user = null
         user = await services.userService.getById(req.session.passport.user)
-        console.log(user)
         try{
             let page = req.query.page || 1
             let cartId = user.cartId|| null

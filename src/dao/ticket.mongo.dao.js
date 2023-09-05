@@ -21,14 +21,13 @@ export default  class TicketMongoDAO {
     
         let value = 0 
         arrayProducts.forEach( async objet => {
-            let product = await services.productService.getById(objet.product)
-            let price = product.price
+            let price = objet.product.price
+            console.log(price)
             let quantity =objet.quantity
             let final = quantity*price
              value+= final
              
         });
-       
         return   value
     }
 

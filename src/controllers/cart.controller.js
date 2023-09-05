@@ -134,7 +134,7 @@ export default class CartController {
 
  finishPurchase = async (req,res)=>{
     try {
-        let userDto = new UserDTO ( services.userService.getById(req.session.passport.user))
+        let userDto = new UserDTO ( await services.userService.getById(req.session.passport.user))
         const cartId = req.params.cid
         let cart = await services.cartService.getById(cartId)
         if(cart){
