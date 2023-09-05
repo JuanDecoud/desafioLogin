@@ -3,9 +3,6 @@ import services from '../services/index.js'
 import { comprobateMongoId } from '../utils/utils.js'
 import UserDTO from '../dto/user.dto.js'
 
-
-
-
 export default class CartController {
 
   createCart = async(req,res)=>{
@@ -31,7 +28,6 @@ export default class CartController {
         
   }
 
-
   updateCart = async(req,res)=>{
       const productId = req.params.pid
       const cartId = req.params.cid
@@ -50,16 +46,11 @@ export default class CartController {
                       if (result ===true ){
                           await cartdb.updateQuantity( productId ,quantity)
                           await services.cartService.update({'_id': cartId},{$set: { ...cartdb}})
-  
-                         /* let cartid = cartdb._id.toString()
-                          let objet = {pathname:'/views/products',query :{cartId :cartid} }*/
                           res.status(200).redirect('/views/products')
                       }
                       else {
                           cartdb.products.push({product : productdb._id , quantity : quantity}  )
                           await services.cartService.update({'_id': cartId},{$set: { ...cartdb}})
-                         /* let cartid = cartdb._id.toString()
-                          let objet = {pathname:'/views/products',query :{cartId :cartid} }*/
                           res.status(200).redirect('/views/products')
                       }
               }
@@ -88,7 +79,6 @@ export default class CartController {
     try {
         let user = await services.userService.getById(req.session.passport.user)
         let cart = await services.cartService.findOnePopulatebycartId(user.cartId)
-        let products = cart.products
         if(cart)res.render ('userCart' , {cart})
         else res.status(404).json({message:"no cart for show"})
         
@@ -151,7 +141,6 @@ export default class CartController {
             let products = cart.products
             let productsatTicket = []
             let nonStockProducts = []
-            console.log(products)
             products.forEach( async objet => {
                 if(objet.product.stock >= objet.quantity){
                     productsatTicket.push(objet)

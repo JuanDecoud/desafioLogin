@@ -3,7 +3,6 @@ export default class TicketRepository {
         this.dao = dao
     }
     create = async (arrayProducts,userEmail )=> await this.dao.create(arrayProducts , userEmail )
-    calculatePayment = async (arrayProducts)=> await this.dao.calculatePayment(arrayProducts)
-    
+    calculatePayment = async (arrayProducts)=>  this.dao.calculatePayment(arrayProducts)
     
  }
