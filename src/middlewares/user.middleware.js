@@ -1,4 +1,5 @@
 import userModel  from '../dao/models/user.model.js'
+import services from '../services/index.js'
 
 
 const validateUser = async(req,res,next)=>{
@@ -12,9 +13,35 @@ const validateUser = async(req,res,next)=>{
     else res.status(402).json({Status : 'Error' , message : "User or Password incorrects"})
 }
 
-
-const userPermission = async (req,res,next)=> {
-    
+const comprobateLoggueUser = async (req,res,next)=> {
+    if (req.session.passport){
+         next ()
+    }
+    else {
+        res.status(404).json({messsage : "Debes ser un usuario logueado"})
+    }
 }
 
-export {validateUser}
+const comprobateAdmin = (req,res,next)=>{
+    let user = services.userService.getById(req.session.passport.user)
+    try {
+        if(user.category === 'Admin') return next()
+        else res.status(404).json ({message:'Only Admin have permission for this area'})
+    } catch (error) {
+        console.log(error)
+
+    }
+}
+
+const comprobateUser = (req,res,next)=>{
+    let user = services.userService.getById(req.session.passport.user)
+    try {
+        if(user.category === 'User') return next()
+        else res.status(404).json ({message:'Only User have permission for this area'})
+    } catch (error) {
+        console.log(error)
+
+    }
+}
+
+export {validateUser , comprobateLoggueUser , comprobateAdmin,comprobateUser}

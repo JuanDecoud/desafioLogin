@@ -1,0 +1,25 @@
+
+<div class = "d-flex flex-column   mx-4 ">
+    <div class ="container mx-4 my-4">
+        <h3>My Cart</h5>
+    </div>
+    <div class = "d-flex flex-row mx-4 align-items-center border border-black col-4">
+        <form action="/carts/{{cart._id}}/purchase"  method="post" class ="">
+    {{#each cart.products}}
+        <div class=" d-flex d-flex-column my-2 border border-button mx-2" >
+            <img class="card-img-top " src={{product.linkThubnail}} alt="Card image cap" style="object-fit: cover;">
+            <div class =" my-1 container-fluid "><p class ="mx-0 "> Product Name : <br><p>{{product.name}}</p> </br></p></div>
+            <div class =" my-1 container-fluid "><p class ="mx-0 ">  Quantity : <br><p>{{quantity}}</p> </br></p></div>
+            <div class =" my-1 container-fluid "><p class ="mx-0 ">  Price : <br><p>${{product.price}}</p> </br></p></div>
+        </div>
+    {{/each}}
+            <div class =" my-1 container-fluid "><button class ="btn btn-sm btn-danger">Confirm</button></div>
+        </form>
+    </div>
+    <div>
+        <form action="/views/products">
+            <div class =" my-1 container-fluid  mx-4 my-2"><button class ="btn btn-sm btn-danger">Add Products</button></div>
+        </form>
+    </div>
+</div>
+

@@ -12,7 +12,7 @@ export default  class UserDao {
     }
     getById = async (id)=> {
        try {
-        let result = await userModel.findById(id)
+        let result = await userModel.findById(id).lean()
         return result
 
        } catch (error) {

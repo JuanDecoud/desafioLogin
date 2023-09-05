@@ -1,3 +1,4 @@
+import services from '../services/index.js'
 import Services from '../services/index.js'
 import uploader from '../utils/multer.product.js'
 
@@ -92,6 +93,28 @@ export default class productControllers {
        }catch (err){
             res.json ({status:'error' , message: err.message })
        }
+    }
+
+    showHomeProducts = async (req,res)=> {
+        let user = null
+        user = await services.userService.getById(req.session.passport.user)
+        console.log(user)
+        try{
+            let page = req.query.page || 1
+            let cartId = user.cartId|| null
+            let filterOptions= {limit : 3 , page : page  , lean :true}
+            let products = await services.productService.paginate({}, filterOptions)
+           /// esto lo hago para agregar el valor del carrito y poder mandarlo por post para conservarlo y poder seguir 
+           /// agregando productos
+           products.docs.forEach(element => {
+                element.cartId= cartId
+            });
+            products.nextLink = products.hasNextPage?`/views/products?page=${products.nextPage}` : " "
+            products.prevLink = products.hasPrevPage? `/views/products?page=${products.prevPage}` : " "
+            res.render ('home' , {products ,user} )
+        }catch (err){
+            res.json ({status : "error" , message : err.message })
+        }
     }
 
 }

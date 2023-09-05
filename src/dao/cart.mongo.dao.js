@@ -3,6 +3,16 @@ import cartModel from "./models/cart.model.js"
 export default class CartDao {
     getAll = async ()=> await this.dao.getAll()
 
+    findOnePopulatebycartId = async (cid)=> {
+        try {
+            let result = cartModel.findOne({'_id' : cid}).populate().lean()
+            return result 
+        } catch (error) {
+            console.log(error)
+            return null
+        }
+    }
+
     getById = async (id)=> {
         try {
             let result = await cartModel.findById(id)
