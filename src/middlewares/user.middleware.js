@@ -22,8 +22,8 @@ const comprobateLoggueUser = async (req,res,next)=> {
     }
 }
 
-const comprobateAdmin = (req,res,next)=>{
-    let user = services.userService.getById(req.session.passport.user)
+const comprobateAdmin = async (req,res,next)=>{
+    let user =await services.userService.getById(req.session.passport.user)
     try {
         if(user.category === 'Admin') return next()
         else res.status(404).json ({message:'Only Admin have permission for this area'})
@@ -33,10 +33,10 @@ const comprobateAdmin = (req,res,next)=>{
     }
 }
 
-const comprobateUser = (req,res,next)=>{
-    let user = services.userService.getById(req.session.passport.user)
+const comprobateUser = async (req,res,next)=>{
+    let user = await services.userService.getById(req.session.passport.user)
     try {
-        if(user.category === 'User') return next()
+        if(user.category === 'user') return next()
         else res.status(404).json ({message:'Only User have permission for this area'})
     } catch (error) {
         console.log(error)

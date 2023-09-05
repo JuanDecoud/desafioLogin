@@ -1,3 +1,4 @@
+import UserDTO from '../dto/user.dto.js'
 import services from '../services/index.js'
 import Services from '../services/index.js'
 import uploader from '../utils/multer.product.js'
@@ -98,19 +99,57 @@ export default class productControllers {
     showHomeProducts = async (req,res)=> {
         let user = null
         user = await services.userService.getById(req.session.passport.user)
+        if(user.category === "user"){
+            try{
+                let page = req.query.page || 1
+                let cartId = user.cartId|| null
+                let filterOptions= {limit : 3 , page : page  , lean :true}
+                let products = await services.productService.paginate({}, filterOptions)
+               /// esto lo hago para agregar el valor del carrito y poder mandarlo por post para conservarlo y poder seguir 
+               /// agregando productos
+               products.docs.forEach(element => {
+                    element.cartId= cartId
+                });
+                products.nextLink = products.hasNextPage?`/views/products?page=${products.nextPage}` : " "
+                products.prevLink = products.hasPrevPage? `/views/products?page=${products.prevPage}` : " "
+                res.render ('home' , {products ,user} )
+            }catch (err){
+                res.json ({status : "error" , message : err.message })
+            }
+
+        }
+        else {
+            try{
+                let page = req.query.page || 1
+                let cartId = user.cartId|| null
+                let filterOptions= {limit : 3 , page : page  , lean :true}
+                let products = await services.productService.paginate({}, filterOptions)
+               /// esto lo hago para agregar el valor del carrito y poder mandarlo por post para conservarlo y poder seguir 
+               /// agregando productos
+               products.docs.forEach(element => {
+                    element.cartId= cartId
+                });
+                products.nextLink = products.hasNextPage?`/views/products?page=${products.nextPage}` : " "
+                products.prevLink = products.hasPrevPage? `/views/products?page=${products.prevPage}` : " "
+                res.render ('adminHome' , {products ,user} )
+            }catch (err){
+                res.json ({status : "error" , message : err.message })
+            }
+        }
+
+    }
+
+    showPorductDetail = async(req,res)=>{
+       
         try{
-            let page = req.query.page || 1
-            let cartId = user.cartId|| null
-            let filterOptions= {limit : 3 , page : page  , lean :true}
-            let products = await services.productService.paginate({}, filterOptions)
-           /// esto lo hago para agregar el valor del carrito y poder mandarlo por post para conservarlo y poder seguir 
-           /// agregando productos
-           products.docs.forEach(element => {
-                element.cartId= cartId
-            });
-            products.nextLink = products.hasNextPage?`/views/products?page=${products.nextPage}` : " "
-            products.prevLink = products.hasPrevPage? `/views/products?page=${products.prevPage}` : " "
-            res.render ('home' , {products ,user} )
+            let userDto = new UserDTO ( await services.userService.getById(req.session.passport.user))
+            let productId = req.query.productId
+            let cartId = userDto.cartId
+            let product = await services.productService.getById(productId)
+            if(cartId)product.cartId=cartId
+            if(product)res.render('productsDetails' , product)
+            else res.status(400).json ({status: error , message : "product dosnt exist"})
+    
         }catch (err){
             res.json ({status : "error" , message : err.message })
         }
