@@ -1,8 +1,12 @@
 import passport from "passport"
 import local from 'passport-local'
-import userModel from '../dao/models/user.model.js'
 import { encrypt, validatePassword } from '../utils/utils.js'
 import GitHubStrategy from 'passport-github2'
+import services from '../services/index.js'
+import CustomError from "../services/errors/custom_errors.js"
+import EErros from "../services/errors/enums.js"
+import generateErrorInfo from "../services/errors/info.js"
+
 
 const LocalStrategy = local.Strategy
 
@@ -15,9 +19,11 @@ const initializePassport = () => {
     } ,async (accessToken,refreshToke,profile,done)=>{
         console.log(profile)
         try{
-            let user = await userModel.findOne({userName : profile._json.email})
+            
+            let user = await services.userService.findbyuserName(profile._json.email)
             if(user)return done(null,user)
-            const newuser = await userModel.create({
+            
+            const newuser = await services.userService.create({
                 userName : profile._json.email,
                 name : profile._json.name
             })
@@ -36,16 +42,22 @@ const initializePassport = () => {
         
         const { name, lastname, country, city,address} = req.body
         try {
-            const user = await userModel.findOne({ userName: username })
+            
+            const user = await services.userService.findbyuserName(username)
             if (user) {
-                console.log('User already exists')
+                CustomError.createError({
+                    name : 'User Creation Error',
+                    cause : generateErrorInfo(user),
+                    message : "Error triying to create a user",
+                    code : EErros.DUPLICATE_USER
+                 })
                 return done(null, false)
             }
             const newUser = {
                 name, lastName : lastname, country , city,address,userName : username, password: encrypt(password) 
             }
             
-            const result = await userModel.create(newUser)
+            const result = await services.userService.create(newUser)
             return done(null, result)
         } catch(err) {
             return done('error al obtener el user')
@@ -56,7 +68,7 @@ const initializePassport = () => {
         usernameField: 'username'
     }, async(username, password, done) => {
         try {
-            const user = await userModel.findOne({ userName: username })
+            const user = await services.userService.findbyuserName(username)
             if (!user ) {
                 return done(null, false)
             }
@@ -73,7 +85,7 @@ const initializePassport = () => {
     })
 
     passport.deserializeUser(async (id, done) => {
-        const user = await userModel.findById(id)
+        const user = await services.userService.getById(id)
         done(null, user)
     })
 

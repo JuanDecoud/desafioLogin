@@ -13,6 +13,7 @@ import MongoStore from 'connect-mongo'
 import session from 'express-session'
 import passport from "passport";
 import initializePassport from "./config/passport.config.js";
+import compression from 'express-compression';
 
 ///-------------------------------------------------------
 const app = express ();
@@ -29,6 +30,7 @@ app.use(session({
     resave: false,
     saveUninitialized: true
 }))
+app.use(compression({brotli : {enable: true,zlib : {}}}))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('./src/public'))

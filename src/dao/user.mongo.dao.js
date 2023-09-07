@@ -39,6 +39,16 @@ export default  class UserDao {
         }
     }
     delete = async (id) => await this.dao.delete(id)
-    findbyAttribute = async (attribute ,value )=>await this.dao.findbyAttribute(attribute,value)
+    
+    findbyuserName = async (value)=>{
+        try {
+            let user = await userModel.findOne({ userName: value })
+            return user ;
+            
+        } catch (error) {
+            console.log(error)
+            return null
+        }
+    }
     paginate = async (filter , filterOptions)=>await this.dao.paginate(filter ,filterOptions)
 }

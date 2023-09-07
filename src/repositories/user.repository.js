@@ -7,7 +7,7 @@ export default class UserRepository {
     create = async (data)=> await this.dao.create(data)
     update = async (id,data) => await this.dao.update(id,data)
     delete = async (id) => await this.dao.delete(id)
-    findbyAttribute = async (attribute ,value )=>await this.dao.findbyAttribute(attribute,value)
+    findbyuserName = async (value )=>await this.dao.findbyuserName(value)
     paginate = async (filter , filterOptions)=>await this.dao.paginate(filter ,filterOptions)
 
 }
