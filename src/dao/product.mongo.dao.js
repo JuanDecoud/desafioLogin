@@ -73,4 +73,14 @@ export default class productDao {
     }
   }
 
+  productsMocking =async (req,res) => {
+    try {
+      
+      
+    } catch (error) {
+       console.log(error)
+       return null
+    }
+  }
+
 }
