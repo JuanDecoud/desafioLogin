@@ -1,7 +1,16 @@
-const generateErrorInfo = user => {
+const cartError = cart => {
     return `
-     The User Name selected : ${user.userName} is already in use
+     The Cart  selected : ${cart._id} not exist
     `
 }
 
-export default generateErrorInfo
+const stockError = products => {
+    let message = ` No hay stock disponible de los siguienters productos: `
+    products.forEach(product => {
+         message += product
+    });
+    return message
+    
+}
+
+export default { cartError , stockError}

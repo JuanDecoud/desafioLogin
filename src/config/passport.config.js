@@ -3,10 +3,6 @@ import local from 'passport-local'
 import { encrypt, validatePassword } from '../utils/utils.js'
 import GitHubStrategy from 'passport-github2'
 import services from '../services/index.js'
-import CustomError from "../services/errors/custom_errors.js"
-import EErros from "../services/errors/enums.js"
-import generateErrorInfo from "../services/errors/info.js"
-
 
 const LocalStrategy = local.Strategy
 
@@ -44,15 +40,7 @@ const initializePassport = () => {
         try {
             
             const user = await services.userService.findbyuserName(username)
-            if (user) {
-                CustomError.createError({
-                    name : 'User Creation Error',
-                    cause : generateErrorInfo(user),
-                    message : "Error triying to create a user",
-                    code : EErros.DUPLICATE_USER
-                 })
-                return done(null, false)
-            }
+            if (user) {return done (null,false)}
             const newUser = {
                 name, lastName : lastname, country , city,address,userName : username, password: encrypt(password) 
             }
@@ -60,7 +48,7 @@ const initializePassport = () => {
             const result = await services.userService.create(newUser)
             return done(null, result)
         } catch(err) {
-            return done('error al obtener el user')
+           return done('error al obtener el user')
         }
     }))
 

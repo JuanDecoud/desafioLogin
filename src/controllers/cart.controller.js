@@ -2,6 +2,9 @@ import { Server } from 'socket.io'
 import services from '../services/index.js'
 import { comprobateMongoId } from '../utils/utils.js'
 import UserDTO from '../dto/user.dto.js'
+import CustomError from '../services/errors/custom_errors.js'
+import EErros from '../services/errors/enums.js'
+import errors from '../services/errors/info.js'
 
 export default class CartController {
 
@@ -39,7 +42,7 @@ export default class CartController {
               try{
                   let cartdb = await services.cartService.getById(cartId)
                   let productdb = await services.productService.getById(productId)
-                  if (!productdb)res.status(400).json ({status : ' Fail' , Message : 'Product does not exist'})
+                  if (!productdb) CustomError.createError({name : "Cart No exist" , cause :errors.cartError ,message :"Error triying to update cart", code: EErros.CART_NOT_EXIST})/*res.status(400).json ({status : ' Fail' , Message : 'Product does not exist'})*/
                   if (!cartdb)res.status(400).json ({status : ' Fail' , Message : ' Cart does not exist'})
                   if (cartdb && productdb){
                       let result =  cartdb.isProductatCard(productId)
@@ -161,7 +164,15 @@ export default class CartController {
               res.status(200).json({status : "ok" , message : 'ticket creado con exito' , ticket : result})
             }
             else {
-                res.status(404).json({status : "Error" , message : 'No hay stock disponibles' })
+                //res.status(404).json({status : "Error" , message : CustomError.createError({name : "No Stock" , cause :errors.stockError(nonStockProducts) ,message :"Error triying to update cart", code: EErros.CART_NOT_EXIST}) })
+                CustomError.createError({
+                    name: 'Ticket creation error',
+                    cause: errors.stockError(nonStockProducts),
+                    message: 'Error  to create a Ticket',
+                    code: EErros.NO_STOCK
+                })
+            
+               //res.send (CustomError.createError({name : "No Stock" , cause :errors.stockError(nonStockProducts) ,message :"Error triying to update cart", code: EErros.CART_NOT_EXIST}))
             }
     
         }else {

@@ -41,6 +41,7 @@ export default  class UserDao {
     delete = async (id) => await this.dao.delete(id)
     
     findbyuserName = async (value)=>{
+        
         try {
             let user = await userModel.findOne({ userName: value })
             return user ;

@@ -1,5 +1,7 @@
 const EErros = {
-    DUPLICATE_USER : 1
+    CART_NOT_EXIST : 1,
+    NO_STOCK : 2,
+
 }
 
 export default EErros

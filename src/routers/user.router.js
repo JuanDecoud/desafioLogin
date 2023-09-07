@@ -9,10 +9,7 @@ const user = Router ()
 user.post('/login', passport.authenticate('login', { failureRedirect: '/views/loginError'}), async (req, res) => {
     res.redirect('/views/products')
 })
-user.post ('/register', passport.authenticate('register' ,
-{failureRedirect :'/views/registerError'}),async (req,res)=> {
-    res.redirect('/views/login')
-})
+user.post ('/register', passport.authenticate('register' ,{failureRedirect :'/views/register' , failureMessage: true}),async (req,res)=> {res.redirect('/views/login')})
 user.get ('/registerGit', passport.authenticate('rGitHub' ,
 {scope :'user:email'}),async (req,res)=> {
 })
